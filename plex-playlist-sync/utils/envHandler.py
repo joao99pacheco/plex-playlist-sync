@@ -1,6 +1,6 @@
 import os
 
-def getEnvContent(env: str, default):
+def getEnvContent(env: str, default = None):
     envContent = os.getenv(f"{env}__FILE")
     if envContent is not None:
         with open(envContent) as f:
