@@ -27,6 +27,7 @@ class UserInputs:
     add_playlist_poster: bool
     add_playlist_description: bool
     append_instead_of_sync: bool
+    invert_playlist: bool
     wait_seconds: int
 
     spotipy_client_id: str

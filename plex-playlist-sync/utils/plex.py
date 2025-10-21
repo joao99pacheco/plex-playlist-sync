@@ -115,6 +115,7 @@ def _update_plex_playlist(
     available_tracks: List,
     playlist: Playlist,
     append: bool = False,
+    invert: bool = False
 ) -> plexapi.playlist.Playlist:
     """Update existing plex playlist with new tracks and metadata.
 
@@ -130,7 +131,10 @@ def _update_plex_playlist(
     plex_playlist = plex.playlist(playlist.name)
     if not append:
         plex_playlist.removeItems(plex_playlist.items())
-    plex_playlist.addItems(available_tracks)
+    if invert:
+        plex_playlist.addItems(available_tracks[::-1])
+    else:
+        plex_playlist.addItems(available_tracks)
     return plex_playlist
 
 
@@ -147,6 +151,11 @@ def update_or_create_plex_playlist(
         available_tracks (List): List of plex.audio.track objects
         playlist (Playlist): Playlist object
     """
+
+    # Can't be bothered to investigate if I could prepend instead of append
+    if userInputs.invert_playlist:
+        userInputs.append_instead_of_sync = False
+
     available_tracks, missing_tracks = _get_available_plex_tracks(plex, tracks)
     if available_tracks:
         try:
@@ -155,6 +164,7 @@ def update_or_create_plex_playlist(
                 available_tracks=available_tracks,
                 playlist=playlist,
                 append=userInputs.append_instead_of_sync,
+                invert=userInputs.invert_playlist
             )
             logging.info("Updated playlist %s", playlist.name)
         except NotFound:

@@ -1,6 +1,7 @@
 import logging
 import os
 import time
+from utils.envHandler import getEnvContent
 
 import deezer
 import spotipy
@@ -13,19 +14,20 @@ from utils.spotify import spotify_playlist_sync
 
 # Read ENV variables
 userInputs = UserInputs(
-    plex_url=os.getenv("PLEX_URL"),
-    plex_token=os.getenv("PLEX_TOKEN"),
-    write_missing_as_csv=os.getenv("WRITE_MISSING_AS_CSV", "0") == "1",
-    append_service_suffix=os.getenv("APPEND_SERVICE_SUFFIX", "1") == "1",
-    add_playlist_poster=os.getenv("ADD_PLAYLIST_POSTER", "1") == "1",
-    add_playlist_description=os.getenv("ADD_PLAYLIST_DESCRIPTION", "1") == "1",
-    append_instead_of_sync=os.getenv("APPEND_INSTEAD_OF_SYNC", False) == "1",
-    wait_seconds=int(os.getenv("SECONDS_TO_WAIT", 86400)),
-    spotipy_client_id=os.getenv("SPOTIFY_CLIENT_ID"),
-    spotipy_client_secret=os.getenv("SPOTIFY_CLIENT_SECRET"),
-    spotify_user_id=os.getenv("SPOTIFY_USER_ID"),
-    deezer_user_id=os.getenv("DEEZER_USER_ID"),
-    deezer_playlist_ids=os.getenv("DEEZER_PLAYLIST_ID"),
+    plex_url=getEnvContent("PLEX_URL"),
+    plex_token=getEnvContent("PLEX_TOKEN"),
+    write_missing_as_csv=getEnvContent("WRITE_MISSING_AS_CSV", "0") == "1",
+    append_service_suffix=getEnvContent("APPEND_SERVICE_SUFFIX", "1") == "1",
+    add_playlist_poster=getEnvContent("ADD_PLAYLIST_POSTER", "1") == "1",
+    append_instead_of_sync=getEnvContent("APPEND_INSTEAD_OF_SYNC", False) == "1",
+    invert_playlist=getEnvContent("INVERT_PLAYLIST", False) == "1",
+    add_playlist_description=getEnvContent("ADD_PLAYLIST_DESCRIPTION", "1") == "1",
+    wait_seconds=int(getEnvContent("SECONDS_TO_WAIT", 86400)),
+    spotipy_client_id=getEnvContent("SPOTIFY_CLIENT_ID"),
+    spotipy_client_secret=getEnvContent("SPOTIFY_CLIENT_SECRET"),
+    spotify_user_id=getEnvContent("SPOTIFY_USER_ID"),
+    deezer_user_id=getEnvContent("DEEZER_USER_ID"),
+    deezer_playlist_ids=getEnvContent("DEEZER_PLAYLIST_ID"),
 )
 while True:
     logging.info("Starting playlist sync")
